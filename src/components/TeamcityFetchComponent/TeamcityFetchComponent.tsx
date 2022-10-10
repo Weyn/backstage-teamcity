@@ -6,15 +6,21 @@ import useAsync from 'react-use/lib/useAsync';
 import { useApi, configApiRef } from '@backstage/core-plugin-api';
 import CheckCircle from '@material-ui/icons/CheckCircle';
 import Cancel from '@material-ui/icons/Cancel';
+import Launch from '@material-ui/icons/Launch';
 import { useEntity } from '@backstage/plugin-catalog-react';
 import { TEAMCITY_ANNOTATION } from '../../routes';
+import { Link } from '@material-ui/core';
+import moment from 'moment';
 
 const useStyles = makeStyles({
-  avatar: {
-    height: 32,
-    width: 32,
-    borderRadius: '50%',
+  verticalCenter: {
+    display: 'flex',
+    alignItems: 'center',
+    flexWrap: 'wrap',
   },
+  pl3: {
+    paddingLeft: '3px'
+  }
 });
 
 type BuildStatus = {
@@ -40,25 +46,35 @@ export const DenseTable = ({ builds }: DenseTableProps) => {
   const columns: TableColumn[] = [
     { title: 'Name', field: 'name' },
     { title: 'Status', field: 'status' },
+    { title: 'Finished At', field: 'finishedAt' },
     { title: 'Url', field: 'webUrl' },
   ];
 
   const data = builds.map(build => {
-    const isSuccess = build?.builds?.build[0].status === 'SUCCESS';
+    let isSuccess = true;
+    let finishedAt = '';
+
+    if (build?.builds?.build?.length >= 0) {
+        isSuccess = build?.builds?.build[0].status === 'SUCCESS';
+        finishedAt = moment(build?.builds?.build[0]?.finishDate).format('MMM Do, HH:mm');
+    }
     
     return {
       name:  build.name,
       status: (
-        <span style={{color: isSuccess ? 'green' : 'red'}}>
-            {isSuccess ? (<CheckCircle/>) : (<Cancel/>)}
+        <p style={{color: isSuccess ? 'green' : 'red'}} className={classes.verticalCenter}>
+          {isSuccess ? (<CheckCircle fontSize="small"/>) : (<Cancel fontSize="small"/>)}
+          <span className={classes.pl3}>
             {build.builds.build[0].statusText}
-        </span>
+          </span>
+        </p>
       ),
+      finishedAt: finishedAt,
       webUrl: (
-        <a
+        <Link
           href={build.webUrl}
           target="_blank"
-        > Open </a>
+        ><Launch fontSize="small"/></Link>
       ),
     };
   });
