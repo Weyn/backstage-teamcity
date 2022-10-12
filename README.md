@@ -1,15 +1,17 @@
-# teamcity
+# Backstage teamcity plugin
 
 Welcome to the teamcity plugin!
 
-_This plugin was created through the Backstage CLI_
-
 ## Getting started
+Install via yarn
+```
+yarn add --cwd packages/app  backstage-plugin-teamcity
+```
 
 In: packages\app\src\components\catalog\EntityPage.tsx file add:
 ```
-import { TeamcityFetchComponent } from '@internal/plugin-teamcity/src/components/TeamcityFetchComponent';
-import { isTeamcityAvailable } from '@internal/plugin-teamcity';
+import { TeamcityFetchComponent } from 'backstage-plugin-teamcity/src/components/TeamcityFetchComponent';
+import { isTeamcityAvailable } from 'backstage-plugin-teamcity';
 ```
 
 Then under cicdContent:
