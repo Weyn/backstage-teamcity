@@ -26,6 +26,7 @@ const useStyles = makeStyles({
 type BuildStatus = {
   status: string;
   statusText: string;
+  finishDate: string;
 };
 type Build = {
   name: string;
