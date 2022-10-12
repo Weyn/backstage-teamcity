@@ -5,16 +5,15 @@ Welcome to the teamcity plugin!
 ## Getting started
 Install via yarn
 ```
-yarn add --cwd packages/app  backstage-plugin-teamcity
+yarn add --cwd packages/app backstage-plugin-teamcity
 ```
 
 In: packages\app\src\components\catalog\EntityPage.tsx file add:
 ```
-import { TeamcityFetchComponent } from 'backstage-plugin-teamcity/src/components/TeamcityFetchComponent';
-import { isTeamcityAvailable } from 'backstage-plugin-teamcity';
+import { isTeamcityAvailable, TeamcityFetchComponent } from 'backstage-plugin-teamcity';
 ```
 
-Then under cicdContent:
+Then under cicdContent block in the EntityPage.tsx file paste:
 ```
     <EntitySwitch.Case if={isTeamcityAvailable}>
         <Grid item sm={12}>
@@ -42,4 +41,4 @@ proxy:
 
 
 # Screenshot
-![error](assets/sample.jpg)
+![error](https://github.com/Weyn/backstage-teamcity/blob/main/assets/sample.jpg)
