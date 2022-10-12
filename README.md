@@ -39,6 +39,11 @@ proxy:
     teamcity/project-id: TEAMCITY_NAME
 ```
 
-
 # Screenshot
 ![error](https://github.com/Weyn/backstage-teamcity/blob/main/assets/sample.jpg)
+
+# Future plans
+* Tests
+* Build details:
+  * history
+  * logs
