@@ -1,3 +1,6 @@
-export { teamcityPlugin } from './plugin';
+export { 
+  teamcityPlugin,
+  teamcityPlugin as plugin,
+  EntityTeamcityContent
+} from './plugin';
 export { isTeamcityAvailable } from './routes';
-export { TeamcityFetchComponent } from './components/TeamcityFetchComponent';

@@ -1,7 +1,8 @@
-import { teamcityPlugin } from './plugin';
+import { teamcityPlugin, EntityTeamcityContent } from './plugin';
 
 describe('teamcity', () => {
-  it('should export plugin', () => {
+  it('should export plugins', () => {
     expect(teamcityPlugin).toBeDefined();
+    expect(EntityTeamcityContent).toBeDefined();
   });
 });

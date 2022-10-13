@@ -10,7 +10,7 @@ yarn add --cwd packages/app backstage-plugin-teamcity
 
 In: packages\app\src\components\catalog\EntityPage.tsx file add:
 ```
-import { isTeamcityAvailable, TeamcityFetchComponent } from 'backstage-plugin-teamcity';
+import { isTeamcityAvailable, EntityTeamcityContent } from 'backstage-plugin-teamcity';
 ```
 
 Then under cicdContent block in the EntityPage.tsx file paste:

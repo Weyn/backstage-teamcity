@@ -28,6 +28,7 @@ type BuildStatus = {
   statusText: string;
   finishDate: string;
 };
+
 type Build = {
   name: string;
   status: string;
@@ -90,6 +91,7 @@ export const DenseTable = ({ builds }: DenseTableProps) => {
   );
 };
 
+/** @public */
 export const TeamcityFetchComponent = () => {
   const { entity } = useEntity();
   const config = useApi(configApiRef);
