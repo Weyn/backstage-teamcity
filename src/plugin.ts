@@ -14,7 +14,7 @@ export const EntityTeamcityContent = teamcityPlugin.provide(
   createComponentExtension({
     name: 'EntityTeamcityContent',
     component: {
-        lazy: () => import('./components/TeamcityFetchComponent').then(m => m.TeamcityFetchComponent),
+        lazy: () => import('./components/TeamcityTableComponent').then(m => m.TeamcityTableComponent),
     },
   }),
 );

@@ -1,1 +1,1 @@
-export { TeamcityFetchComponent } from './TeamcityFetchComponent';
+export { TeamcityTableComponent } from './TeamcityTableComponent';

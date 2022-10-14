@@ -20,58 +20,82 @@ const useStyles = makeStyles({
   },
   pl3: {
     paddingLeft: '3px'
+  },
+  success: {
+    color: '#388e3c',
+  },
+  error: {
+    color: '#c62828',
   }
 });
 
-type BuildStatus = {
+type Build = {
   status: string;
   statusText: string;
   finishDate: string;
+  startDate: string;
+  branchName: string;
+  revisions: RevisionsCollection;
 };
 
-type Build = {
+type BuildType = {
   name: string;
   status: string;
   webUrl: string;
   builds: {
-    build: BuildStatus[];
+    build: Build[];
   }
 };
 
+type RevisionsCollection = {
+  revision: Revision[];
+};
+
+type Revision = {
+  version: string;
+};
+
 type DenseTableProps = {
-    builds: Build[];
+  builds: BuildType[];
 };
 
 export const DenseTable = ({ builds }: DenseTableProps) => {
   const classes = useStyles();
-
   const columns: TableColumn[] = [
     { title: 'Name', field: 'name' },
+    { title: 'Source', field: 'branchName' },
     { title: 'Status', field: 'status' },
     { title: 'Finished At', field: 'finishedAt' },
     { title: 'Url', field: 'webUrl' },
   ];
-
   const data = builds.map(build => {
     let isSuccess = true;
     let finishedAt = '';
+    let startedAt = '';
+    let branchName = '';
+    let revision = '';
 
     if (build?.builds?.build?.length >= 0) {
         isSuccess = build?.builds?.build[0].status === 'SUCCESS';
+        startedAt = moment(build?.builds?.build[0]?.startDate).format('MMM Do, HH:mm');
         finishedAt = moment(build?.builds?.build[0]?.finishDate).format('MMM Do, HH:mm');
+        branchName = build?.builds?.build[0].branchName;
+        const revisions = build?.builds?.build[0]?.revisions?.revision;
+        revision = build?.builds?.build[0]?.revisions?.revision[revisions.length-1]?.version.substring(0, 7);
     }
     
     return {
-      name:  build.name,
+      name: build.name,
+      branchName: `${branchName} (${revision})`,
       status: (
-        <p style={{color: isSuccess ? 'green' : 'red'}} className={classes.verticalCenter}>
+        <p className={[isSuccess ? classes.success : classes.error, classes.verticalCenter].join(' ')}>
           {isSuccess ? (<CheckCircle fontSize="small"/>) : (<Cancel fontSize="small"/>)}
           <span className={classes.pl3}>
             {build.builds.build[0].statusText}
           </span>
         </p>
       ),
-      finishedAt: finishedAt,
+      finishedAt: `${finishedAt}`,
       webUrl: (
         <Link
           href={build.webUrl}
@@ -92,13 +116,13 @@ export const DenseTable = ({ builds }: DenseTableProps) => {
 };
 
 /** @public */
-export const TeamcityFetchComponent = () => {
+export const TeamcityTableComponent = () => {
   const { entity } = useEntity();
   const config = useApi(configApiRef);
-  const { value, loading, error } = useAsync(async (): Promise<Build[]> => {
-    const backendUrl = config.getString('backend.baseUrl');
-    const response = await fetch(`${backendUrl}/api/proxy/teamcity-proxy/app/rest/buildTypes?locator=affectedProject:(id:${entity.metadata.annotations?.[TEAMCITY_ANNOTATION]})&fields=buildType(id,name,webUrl,builds($locator(running:false,count:1),build(number,status,statusText,finishDate)))`);
-    const data = await response.json();
+  const { value, loading, error } = useAsync(async (): Promise<BuildType[]> => {
+  const backendUrl = config.getString('backend.baseUrl');
+  const response = await fetch(`${backendUrl}/api/proxy/teamcity-proxy/app/rest/buildTypes?locator=affectedProject:(id:${entity.metadata.annotations?.[TEAMCITY_ANNOTATION]})&fields=buildType(id,name,webUrl,builds($locator(running:false,count:1),build(number,status,statusText,branchName,revisions,startDate,finishDate)))`);
+  const data = await response.json();
     
     return data.buildType;
   }, []);
