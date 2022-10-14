@@ -17,7 +17,7 @@ Then under cicdContent block in the EntityPage.tsx file paste:
 ```
     <EntitySwitch.Case if={isTeamcityAvailable}>
         <Grid item sm={12}>
-            <TeamcityFetchComponent/>
+            <EntityTeamcityContent/>
         </Grid>
     </EntitySwitch.Case>
 ```
