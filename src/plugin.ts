@@ -1,20 +1,37 @@
-import { createComponentExtension, createPlugin } from '@backstage/core-plugin-api';
+import { 
+  createComponentExtension,
+  createSubRouteRef,
+  createPlugin,
+  createRoutableExtension,
+} from '@backstage/core-plugin-api';
 import { rootRouteRef } from './routes';
 
 /** @public */
 export const teamcityPlugin = createPlugin({
   id: 'teamcity',
   routes: {
-    root: rootRouteRef
+    entityContent: rootRouteRef
   },
 });
 
 /** @public */
+export const buildRouteRef = createSubRouteRef({
+  id: 'teamcity/build',
+  path: '/build/:buildName/:buildId',
+  parent: rootRouteRef,
+});
+
+/** @public */
 export const EntityTeamcityContent = teamcityPlugin.provide(
-  createComponentExtension({
+  // createComponentExtension({
+  //   name: 'EntityTeamcityContent',
+  //   component: {
+  //       lazy: () => import('./components/TeamcityTableComponent').then(m => m.TeamcityTableComponent),
+  //   },
+  // }),
+  createRoutableExtension({
     name: 'EntityTeamcityContent',
-    component: {
-        lazy: () => import('./components/TeamcityTableComponent').then(m => m.TeamcityTableComponent),
-    },
+    component: () => import('./components/Router').then(m => m.Router),
+    mountPoint: rootRouteRef,
   }),
 );
