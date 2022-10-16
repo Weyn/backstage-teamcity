@@ -1,6 +1,8 @@
+![example workflow](https://github.com/Weyn/backstage-teamcity/actions/workflows/main.yml/badge.svg)
+
 # Backstage teamcity plugin
 
-Welcome to the teamcity plugin!
+Welcome to the teamcity plugin for Backstage!
 
 ## Getting started
 Install via yarn
@@ -45,5 +47,5 @@ proxy:
 ![error](https://github.com/Weyn/backstage-teamcity/blob/main/assets/log.jpg)
 
 # Future plans
-* More Tests
+* More tests
 * Run button
