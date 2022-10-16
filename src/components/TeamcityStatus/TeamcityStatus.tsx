@@ -51,11 +51,11 @@ export const TeamcityStatus = (props: PropTypes) => {
   }
 
   return (
-    <p className={[getClass(props.status), classes.verticalCenter].join(' ')}>
+    <span className={[getClass(props.status), classes.verticalCenter].join(' ')}>
       {getIcon(props.status)}
       <span className={classes.pl3}>
         {props.statusText}
       </span>
-    </p>
+    </span>
   );
 };

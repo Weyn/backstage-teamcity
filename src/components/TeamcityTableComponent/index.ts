@@ -1,1 +1,1 @@
-export { TeamcityTableComponent, buildUrl } from './TeamcityTableComponent';
+export { TeamcityTableComponent } from './TeamcityTableComponent';

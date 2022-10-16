@@ -7,7 +7,7 @@ import Launch from '@material-ui/icons/Launch';
 import { useEntity } from '@backstage/plugin-catalog-react';
 import { TEAMCITY_ANNOTATION } from '../../routes';
 import moment from 'moment';
-import { buildRouteRef } from '../../plugin';
+import { buildLogsRouteRef, buildRouteRef } from '../../plugin';
 import { BuildType, DenseTableProps, Revision } from '../types';
 import { TeamcityStatus } from '../TeamcityStatus/TeamcityStatus';
 import { TeamcitySource } from '../TeamcitySource/TeamcitySource';
@@ -24,6 +24,25 @@ export const buildUrl = (build: Partial<BuildType>) => {
         {build.name}
       </Link>
     );
+  }
+
+  return <LinkWrapper />;
+}
+
+export const buildLogUrl = (build: Partial<BuildType>, buildRunId?: string) => {
+  const LinkWrapper = () => {
+    const routeLink = useRouteRef(buildLogsRouteRef);
+    return buildRunId ? (
+      <Link
+      style={{float:'left'}}
+        to={routeLink({
+          buildName: String(build.name),
+          buildId: String(build.id),
+          buildRunId: String(buildRunId)
+        })}>
+        (view logs)
+      </Link>
+      ) : (<></>);
   }
 
   return <LinkWrapper />;
@@ -46,26 +65,29 @@ export const DenseTable = ({ builds }: DenseTableProps) => {
   ];
   const data = builds.map(build => {
     let finishedAt = '';
-    let startedAt = '';
     let branchName = '';
+    let buildRunId;
     let revision: Revision = {
       version: ''
     };
 
     if (build?.builds?.build?.length >= 0) {
-      // todo handle empty data
-      startedAt = moment(build?.builds?.build[0]?.startDate).format('MMM Do, HH:mm');
-      finishedAt = moment(build?.builds?.build[0]?.finishDate).format('MMM Do, HH:mm');
+      finishedAt = build?.builds?.build[0]?.finishDate ? moment(build?.builds?.build[0]?.finishDate).format('MMM Do, HH:mm') : '';
       branchName = build?.builds?.build[0]?.branchName;
+      buildRunId = build?.builds?.build[0]?.id;
       const revisions = build?.builds?.build[0]?.revisions?.revision;
       revision = build?.builds?.build[0]?.revisions?.revision[revisions.length-1];
     }
     
     return {
+      id: build.id,
       name: build.name,
       branchName: (<TeamcitySource revision={revision} branchName={branchName}/>),
       status: (
-        <TeamcityStatus status={build?.builds?.build[0]?.status} statusText={build?.builds?.build[0]?.statusText} />
+        <>
+          <TeamcityStatus status={build?.builds?.build[0]?.status} statusText={build?.builds?.build[0]?.statusText} />
+          {buildLogUrl(build, buildRunId)}
+        </>
       ),
       finishedAt: `${finishedAt}`,
       webUrl: (
@@ -92,10 +114,11 @@ export const TeamcityTableComponent = () => {
   const { entity } = useEntity();
   const config = useApi(configApiRef);
   const { value, loading, error } = useAsync(async (): Promise<BuildType[]> => {
-  const backendUrl = config.getString('backend.baseUrl');
-  const fieldsQuery = 'buildType(id,name,webUrl,builds($locator(running:false,count:1),build(number,status,statusText,branchName,revisions(revision(version,vcsBranchName,vcs-root-instance)),startDate,finishDate)))';
-  const response = await fetch(`${backendUrl}/api/proxy/teamcity-proxy/app/rest/buildTypes?locator=affectedProject:(id:${entity.metadata.annotations?.[TEAMCITY_ANNOTATION]})&fields=${fieldsQuery}`);
+    const backendUrl = config.getString('backend.baseUrl');
+    const fieldsQuery = 'buildType(id,name,webUrl,builds($locator(running:false,count:1),build(id,number,status,statusText,branchName,revisions(revision(version,vcsBranchName,vcs-root-instance)),startDate,finishDate)))';
+    const response = await fetch(`${backendUrl}/api/proxy/teamcity-proxy/app/rest/buildTypes?locator=affectedProject:(id:${entity.metadata.annotations?.[TEAMCITY_ANNOTATION]})&fields=${fieldsQuery}`);
     const data = await response.json();
+
     return data.buildType;
   }, []);
 

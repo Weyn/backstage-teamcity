@@ -21,6 +21,13 @@ export const buildRouteRef = createSubRouteRef({
 });
 
 /** @public */
+export const buildLogsRouteRef = createSubRouteRef({
+  id: 'teamcity/build',
+  path: '/build/:buildName/:buildId/log/:buildRunId',
+  parent: rootRouteRef,
+});
+
+/** @public */
 export const EntityTeamcityContent = teamcityPlugin.provide(
   createRoutableExtension({
     name: 'EntityTeamcityContent',

@@ -1,10 +1,16 @@
 export type Build = {
+  id?: string;
   status: string;
   statusText: string;
   finishDate: string;
   startDate: string;
   branchName: string;
   revisions: RevisionsCollection;
+  webUrl?: string;
+};
+
+export type BuildCollection = {
+  builds: Build[];
 };
 
 export type BuildType = {
