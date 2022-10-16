@@ -62,7 +62,7 @@ export const TeamcityHistoryTableComponent = ({builds}: BuildCollection) => {
 
   return (
     <Table
-      title="Builds"
+      title="History"
       options={{ search: false, paging: false }}
       columns={columns}
       data={data}
