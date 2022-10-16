@@ -27,8 +27,8 @@ const TeamcityLogPage = () => {
   const classes = useStyles();
   const { buildName, buildId, buildRunId } = useRouteRefParams(buildLogsRouteRef);
   const config = useApi(configApiRef);
-  const backendUrl = config.getString('backend.baseUrl');
   const { value, loading, error } = useAsync(async (): Promise<string> => {
+    const backendUrl = config.getString('backend.baseUrl');
     const response = await fetch(`${backendUrl}/api/proxy/teamcity-proxy/downloadBuildLog.html?buildId=${buildRunId}`);
     const data = await response.text();
 

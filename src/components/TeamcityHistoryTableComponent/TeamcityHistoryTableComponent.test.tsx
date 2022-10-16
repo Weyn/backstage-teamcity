@@ -1,47 +1,32 @@
 import React from 'react';
-import { DenseTable, TeamcityTableComponent } from './TeamcityTableComponent';
 import { ThemeProvider } from '@material-ui/core';
 import { lightTheme } from '@backstage/theme';
+import { rest } from 'msw';
 import { setupServer } from 'msw/node';
 import {
   setupRequestMockHandlers,
   renderInTestApp,
 } from "@backstage/test-utils";
+import { TeamcityHistoryTableComponent } from './TeamcityHistoryTableComponent';
 
-jest.mock('@backstage/plugin-catalog-react', () => {
-  return { 
-    useEntity: jest.fn(() => (
-      {
-        metadata: {
-          annotations: {
-            'teamcity/project-id': 'test'
-          }
-        }
-      }
-    ))
-  } 
-})
-
-describe('TeamcityTableComponent', () => {
+describe('TeamcityHistoryTableComponent', () => {
   const server = setupServer();
+  // Enable sane handlers for network requests
   setupRequestMockHandlers(server);
 
-  it('should render with missing config error message', async () => {
-    const rendered = await renderInTestApp(
-      <ThemeProvider theme={lightTheme}>
-        <TeamcityTableComponent/>
-      </ThemeProvider>,
+  // setup mock response
+  beforeEach(() => {
+    server.use(
+      rest.get('/*', (_, res, ctx) => res(ctx.status(200), ctx.json({}))),
     );
-    expect(rendered.getByText('Missing required config value at \'backend.baseUrl\'')).toBeInTheDocument();
   });
 
   it('should render with empty table', async () => {
     const rendered = await renderInTestApp(
       <ThemeProvider theme={lightTheme}>
-        <DenseTable builds={[]}/>
+        <TeamcityHistoryTableComponent builds={[]}/>
       </ThemeProvider>,
     );
-    expect(rendered.getByText('Name')).toBeInTheDocument();
     expect(rendered.getByText('Source')).toBeInTheDocument();
     expect(rendered.getByText('Status')).toBeInTheDocument();
     expect(rendered.getByText('Finished At')).toBeInTheDocument();

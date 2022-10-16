@@ -1,23 +1,17 @@
-import { Entity } from '@backstage/catalog-model';
 import { MissingAnnotationEmptyState } from '@backstage/core-components';
 import { useEntity } from '@backstage/plugin-catalog-react';
 import React from 'react';
 import { Route, Routes } from 'react-router';
 import { buildRouteRef, buildLogsRouteRef } from '../plugin';
-import { TEAMCITY_ANNOTATION } from '../routes';
+import { isTeamcityAvailable, TEAMCITY_ANNOTATION } from '../routes';
 import { TeamcityBuildPage } from './TeamcityBuildPage/TeamcityBuildPage';
 import { TeamcityLogPage } from './TeamcityLogPage/TeamcityLogPage';
 import { TeamcityTableComponent } from './TeamcityTableComponent/TeamcityTableComponent';
-// import { DetailedViewPage } from './BuildWithStepsPage/';
-
-/** @public */
-export const isJenkinsAvailable = (entity: Entity) =>
-  Boolean(entity.metadata.annotations?.[TEAMCITY_ANNOTATION]);
 
 export const Router = () => {
   const { entity } = useEntity();
 
-  if (!isJenkinsAvailable(entity)) {
+  if (!isTeamcityAvailable(entity)) {
     return <MissingAnnotationEmptyState annotation={TEAMCITY_ANNOTATION} />;
   }
 
