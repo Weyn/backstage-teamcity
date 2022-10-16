@@ -22,6 +22,11 @@
     "backstage",
     "teamcity"
   ],
+  "jest": {
+    "coveragePathIgnorePatterns": [
+      "src/components/types.ts"
+    ]
+  },
   "scripts": {
     "start": "backstage-cli package start",
     "build": "backstage-cli package build",

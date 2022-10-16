@@ -1,4 +1,5 @@
-![example workflow](https://github.com/Weyn/backstage-teamcity/actions/workflows/main.yml/badge.svg)
+![Test Workflow](https://github.com/Weyn/backstage-teamcity/actions/workflows/main.yml/badge.svg)
+[![Coverage Status](https://coveralls.io/repos/github/Weyn/backstage-teamcity/badge.svg?branch=main)](https://coveralls.io/github/Weyn/backstage-teamcity?branch=main)
 
 # Backstage teamcity plugin
 
