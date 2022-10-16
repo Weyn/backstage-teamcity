@@ -1,5 +1,4 @@
 import { 
-  createComponentExtension,
   createSubRouteRef,
   createPlugin,
   createRoutableExtension,
@@ -23,12 +22,6 @@ export const buildRouteRef = createSubRouteRef({
 
 /** @public */
 export const EntityTeamcityContent = teamcityPlugin.provide(
-  // createComponentExtension({
-  //   name: 'EntityTeamcityContent',
-  //   component: {
-  //       lazy: () => import('./components/TeamcityTableComponent').then(m => m.TeamcityTableComponent),
-  //   },
-  // }),
   createRoutableExtension({
     name: 'EntityTeamcityContent',
     component: () => import('./components/Router').then(m => m.Router),

@@ -10,7 +10,7 @@ export type Build = {
 export type BuildType = {
   id: string;
   name: string;
-  status: string;
+  status?: string;
   webUrl: string;
   builds: {
     build: Build[];

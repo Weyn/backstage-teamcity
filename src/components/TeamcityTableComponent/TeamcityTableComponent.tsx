@@ -10,8 +10,24 @@ import moment from 'moment';
 import { buildRouteRef } from '../../plugin';
 import { BuildType, DenseTableProps, Revision } from '../types';
 import { TeamcityStatus } from '../TeamcityStatus/TeamcityStatus';
-import { GitHubCommitLink } from '../GitHubCommitLink/GitHubCommitLink';
 import { TeamcitySource } from '../TeamcitySource/TeamcitySource';
+
+export const buildUrl = (build: Partial<BuildType>) => {
+  const LinkWrapper = () => {
+    const routeLink = useRouteRef(buildRouteRef);
+    return (
+      <Link
+        to={routeLink({
+          buildName: String(build.name),
+          buildId: String(build.id)
+        })}>
+        {build.name}
+      </Link>
+    );
+  }
+
+  return <LinkWrapper />;
+}
 
 export const DenseTable = ({ builds }: DenseTableProps) => {
   const columns: TableColumn[] = [
@@ -20,20 +36,7 @@ export const DenseTable = ({ builds }: DenseTableProps) => {
       field: 'name',
       highlight: true,
       render: (build: Partial<BuildType>) => {
-        const LinkWrapper = () => {
-          const routeLink = useRouteRef(buildRouteRef);
-          return (
-            <Link
-              to={routeLink({
-                buildName: String(build.name),
-                buildId: String(build.id)
-              })}>
-              {build.name}
-            </Link>
-          );
-        }
-
-        return <LinkWrapper />;
+        return buildUrl(build);
       }
     },
     { title: 'Source', field: 'branchName' },
