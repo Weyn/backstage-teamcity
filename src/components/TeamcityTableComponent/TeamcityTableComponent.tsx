@@ -50,9 +50,10 @@ export const DenseTable = ({ builds }: DenseTableProps) => {
     };
 
     if (build?.builds?.build?.length >= 0) {
+      // todo handle empty data
       startedAt = moment(build?.builds?.build[0]?.startDate).format('MMM Do, HH:mm');
       finishedAt = moment(build?.builds?.build[0]?.finishDate).format('MMM Do, HH:mm');
-      branchName = build?.builds?.build[0].branchName;
+      branchName = build?.builds?.build[0]?.branchName;
       const revisions = build?.builds?.build[0]?.revisions?.revision;
       revision = build?.builds?.build[0]?.revisions?.revision[revisions.length-1];
     }
@@ -61,7 +62,7 @@ export const DenseTable = ({ builds }: DenseTableProps) => {
       name: build.name,
       branchName: (<TeamcitySource revision={revision} branchName={branchName}/>),
       status: (
-        <TeamcityStatus status={build?.builds?.build[0].status} statusText={build?.builds?.build[0].statusText} />
+        <TeamcityStatus status={build?.builds?.build[0]?.status} statusText={build?.builds?.build[0]?.statusText} />
       ),
       finishedAt: `${finishedAt}`,
       webUrl: (
