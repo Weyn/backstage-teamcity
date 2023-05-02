@@ -4,10 +4,11 @@ import {
   Paper,
   Typography,
 } from '@material-ui/core';
+// @ts-ignore
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { buildLogsRouteRef } from '../../plugin';
-import { Breadcrumbs, Content, Link, Progress } from '@backstage/core-components';
+import { Breadcrumbs, Content, Link, Progress, LogViewer } from '@backstage/core-components';
 import Alert from '@material-ui/lab/Alert';
 import { useApi, configApiRef, useRouteRefParams } from '@backstage/core-plugin-api';
 import useAsync from 'react-use/lib/useAsync';
@@ -21,7 +22,16 @@ const useStyles = makeStyles({
   card: {
     padding: '10px 20px'
   },
+  lineNumber: {
+    display: 'none'
+  },
+  logviewer: {
+    maxHeight: 800,
+    overflow: 'auto',
+    whiteSpace: 'pre'
+  }
 });
+
 
 const TeamcityLogPage = () => {
   const classes = useStyles();
@@ -50,9 +60,13 @@ const TeamcityLogPage = () => {
       </Breadcrumbs>
       <Box m={1} />
       <Card className={classes.card}>
-        <Paper className={classes.paper}>
-          {value}
-        </Paper>
+        // Since the LogViewer uses windowing to avoid rendering all contents at once, the
+        // log is sized automatically to fill the available vertical space. This means
+        // it may often be needed to wrap the LogViewer in a container that provides it
+        // with a fixed amount of space.
+        <div style={{width: '100%', height: '70vh'}}>
+          <LogViewer text={value || ""} />
+        </div>
       </Card>
     </div>
   );
