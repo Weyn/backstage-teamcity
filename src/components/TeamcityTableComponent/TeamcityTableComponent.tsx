@@ -122,7 +122,7 @@ export const DenseTable = ({ builds }: DenseTableProps) => {
   groupedBuildsMap.forEach((value, projectIdKey) => {
     const projectName = projectNames.get(projectIdKey) || ""; // every subproject level is separated by '/'
     const lastSlashIndex = projectName.lastIndexOf("/");
-    let beforeLastPart, lastPart;
+    let beforeLastPart; let lastPart;
 
     if (lastSlashIndex > 0) {
       beforeLastPart = projectName.slice(0, lastSlashIndex).trim();
