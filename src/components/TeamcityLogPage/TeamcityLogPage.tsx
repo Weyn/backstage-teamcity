@@ -38,7 +38,7 @@ const TeamcityLogPage = () => {
     }
 
     return (
-        <>
+        <div>
             <Breadcrumbs aria-label="breadcrumb">
                 <Link to="../../../../..">Builds</Link>
                 <Link to="../..">{buildName} ({buildId})</Link>
@@ -54,7 +54,7 @@ const TeamcityLogPage = () => {
                     <LogViewer text={value || ""} classes={{root: classes.logViewer}}/>
                 </div>
             </Card>
-        </>
+        </div>
     )
 };
 const Page = () => (
