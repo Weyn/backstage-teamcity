@@ -1,7 +1,6 @@
 import {
   Box,
   Card,
-  Paper,
   Typography,
 } from '@material-ui/core';
 // @ts-ignore
@@ -14,22 +13,21 @@ import { useApi, configApiRef, useRouteRefParams } from '@backstage/core-plugin-
 import useAsync from 'react-use/lib/useAsync';
 
 const useStyles = makeStyles({
-  paper: {
-    maxHeight: 800,
-    overflow: 'auto',
-    whiteSpace: 'pre'
-  },
   card: {
     padding: '10px 20px'
   },
-  lineNumber: {
-    display: 'none'
+  logPageRoot: {
+    height: '100%'
   },
-  logviewer: {
-    maxHeight: 800,
-    overflow: 'auto',
-    whiteSpace: 'pre'
-  }
+  logViewerWrapper: {
+    width: '100%',
+    height: 'min-content',
+  },
+  logViewer: {
+    '& a[role="row"]': {
+        display: 'none'
+    },
+  },
 });
 
 
@@ -52,7 +50,7 @@ const TeamcityLogPage = () => {
   }
 
   return (
-    <div>
+    <div className={classes.logPageRoot}>
       <Breadcrumbs aria-label="breadcrumb">
         <Link to="../../../../..">Builds</Link>
         <Link to="../..">{buildName} ({buildId})</Link>
@@ -60,12 +58,12 @@ const TeamcityLogPage = () => {
       </Breadcrumbs>
       <Box m={1} />
       <Card className={classes.card}>
-        // Since the LogViewer uses windowing to avoid rendering all contents at once, the
-        // log is sized automatically to fill the available vertical space. This means
-        // it may often be needed to wrap the LogViewer in a container that provides it
-        // with a fixed amount of space.
-        <div style={{width: '100%', height: '70vh'}}>
-          <LogViewer text={value || ""} />
+        {/* Since the LogViewer uses windowing to avoid rendering all contents at once, the
+        log is sized automatically to fill the available vertical space. This means
+        it may often be needed to wrap the LogViewer in a container that provides it
+        with a fixed amount of space. */}
+        <div className={classes.logViewerWrapper}>
+          <LogViewer text={value || ""} classes={{ root: classes.logViewer }} />
         </div>
       </Card>
     </div>
