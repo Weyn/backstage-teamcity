@@ -47,6 +47,15 @@ proxy:
 ![error](https://github.com/Weyn/backstage-teamcity/blob/main/assets/history.jpg)
 ![error](https://github.com/Weyn/backstage-teamcity/blob/main/assets/log.jpg)
 
+# Developing
+
+## Installing packages
+Run `yarn install`
+
+## Running tests
+
+To run tests execute `yarn test a`
+
 # Future plans
 * More tests
 * Run button

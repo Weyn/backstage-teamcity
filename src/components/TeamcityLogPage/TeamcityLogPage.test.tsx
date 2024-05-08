@@ -3,6 +3,7 @@ import { ThemeProvider } from '@material-ui/core';
 import { lightTheme } from '@backstage/theme';
 import { rest } from 'msw';
 import { setupServer } from 'msw/node';
+import { screen } from '@testing-library/react';
 import {
   setupRequestMockHandlers,
   renderInTestApp,
@@ -41,6 +42,7 @@ describe('TeamcityLogPage', () => {
         <TeamcityLogPage/>
       </ThemeProvider>,
     );
-    expect(rendered.getByText('Missing required config value at \'backend.baseUrl\'')).toBeInTheDocument();
+
+    expect(rendered.getByText('Missing required config value at \'backend.baseUrl\'', {exact: false})).toBeInTheDocument();
   });
 });

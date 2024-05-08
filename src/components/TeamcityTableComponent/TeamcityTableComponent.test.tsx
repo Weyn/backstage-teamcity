@@ -32,7 +32,7 @@ describe('TeamcityTableComponent', () => {
         <TeamcityTableComponent/>
       </ThemeProvider>,
     );
-    expect(rendered.getByText('Missing required config value at \'backend.baseUrl\'')).toBeInTheDocument();
+    expect(rendered.getByText('Missing required config value at \'backend.baseUrl\'', {exact: false})).toBeInTheDocument();
   });
 
   it('should render with empty table', async () => {

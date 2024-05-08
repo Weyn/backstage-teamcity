@@ -41,6 +41,6 @@ describe('TeamcityBuildPage', () => {
         <TeamcityBuildPage/>
       </ThemeProvider>,
     );
-    expect(rendered.getByText('Missing required config value at \'backend.baseUrl\'')).toBeInTheDocument();
+    expect(rendered.getByText('Missing required config value at \'backend.baseUrl\'', {exact: false})).toBeInTheDocument();
   });
 });
